@@ -58,7 +58,7 @@
           <h2 class="card-title text-danger">Don't Do</h2>
           <form class="form-inline">
             <input type="text" class="form-control mr-2 text-danger" placeholder="What do you need to do?" v-model="newTask"><br>
-            <button class="btn btn-outline-danger" @click="addNewTask">Add</button>
+            <button class="btn btn-outline-danger" @click="addNewTask('DontDo')">Add</button>
           </form>
           <div class="card-group pt-2">
             <div class="card">
@@ -68,6 +68,7 @@
                   v-for="(task) in tasks"
                   v-bind:key="task.id"
                   v-bind:title="task.title"
+                  v-bind:quadrant="task.quadrant"
                   @remove="removeTask(task.id)"
                 ></div>
               </div>
@@ -91,29 +92,28 @@ export default {
       lastTaskId: 2,
       tasks: [
         {id: 1,
-        title: "Task 1"
+        title: "Task 1",
+        quadrant: "DoFirst",
         },
         {id: 2,
-        title: "Task 2"
+        title: "Task 2",
+        quadrant: "DontDo",
         },
       ],
     };
   },
   methods: {
-    addNewTask() {
-      console.log(this.lastTaskId);
+    addNewTask(quadrant) {
       this.tasks.push({
-        id: this.lastTaskId++,
-        title: this.newTask
+        id: ++this.lastTaskId,
+        title: this.newTask,
+        quadrant: quadrant,
       });
-      console.log(this.lastTaskId);
-      this.tasks.forEach(element => console.log(element.id + " - " + element.title));
       this.newTask = '';
     },
     removeTask(id) {
       let idTask = this.tasks.findIndex(element => element.id === id);
-      alert(idTask);
-      console.log(this.tasks.splice(idTask, 1));
+      this.tasks.splice(idTask, 1);
     },
   },
 }
